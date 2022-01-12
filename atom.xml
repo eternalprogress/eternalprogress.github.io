@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://eternalprogress.github.io</id>
     <title>学习记录</title>
-    <updated>2022-01-12T07:19:56.286Z</updated>
+    <updated>2022-01-12T07:43:16.749Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://eternalprogress.github.io"/>
     <link rel="self" href="https://eternalprogress.github.io/atom.xml"/>
@@ -30,6 +30,15 @@
 <h4 id="五级标题">五级标题</h4>
 <p><code>###### 六级标题</code></p>
 <h6 id="六级标题">六级标题</h6>
+<h3 id="markdown段落">Markdown段落</h3>
+<p>markdown段落没有特殊的格式，直接编写文字就好。</p>
+<h3 id="字体">字体</h3>
+<p><code>*斜体文字*</code><br>
+<em>斜体文字</em><br>
+<code>*粗体文字*</code><br>
+<strong>粗体文字</strong><br>
+<code>***粗斜体文字***</code><br>
+<em><strong>粗斜体文字</strong></em></p>
 ]]></content>
     </entry>
     <entry>
