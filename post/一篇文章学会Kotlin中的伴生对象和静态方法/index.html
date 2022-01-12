@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>一篇文章学会Kotlin中的伴生对象和静态方法 | 学习记录</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://eternalprogress.github.io/favicon.ico?v=1641968495517">
+<link rel="stylesheet" href="https://eternalprogress.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="在日常的开发中，我们经常使用静态变量和静态方法，在java开发中大家经常遇到，那么在kotlin中应该如何使用静态方法和静态对象呢？
+
+java中的静态方法
+public class JavaUtils {
+    public stati..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://eternalprogress.github.io">
+        <img src="https://eternalprogress.github.io/images/avatar.png?v=1641968495517" class="site-logo">
+        <h1 class="site-title">学习记录</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives/" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Joker</a> | <a class="rss" href="https://eternalprogress.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">一篇文章学会Kotlin中的伴生对象和静态方法</h2>
+            <div class="post-date">2022-01-12</div>
+            
+              <div class="feature-container" style="background-image: url('https://eternalprogress.github.io/post-images/一篇文章学会Kotlin中的伴生对象和静态方法.png')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <p>在日常的开发中，我们经常使用<strong>静态变量</strong>和<strong>静态方法</strong>，在java开发中大家经常遇到，那么在kotlin中应该如何使用静态方法和静态对象呢？</p>
+<!-- more -->
+<h4 id="java中的静态方法">java中的静态方法</h4>
+<pre><code class="language-java">public class JavaUtils {
+    public static int sum(int a,int b) {
+        return a + b;
+    }
+
+}
+</code></pre>
+<h4 id="kotlin中的静态方法">Kotlin中的静态方法</h4>
+<p>在kotlin中其实是不支持静态方法和静态成员的，但是kotlin支持全局函数和变量。在学习kotlin的过程中，发现了几种方法可以实现kotlin中的静态方法</p>
+<ul>
+<li>
+<p><strong>静态类</strong>：使用object关键字，类中的所有的方法都是静态方法。</p>
+<pre><code class="language-kotlin">object Utils {
+    fun sum(a:Int,b:Int):Int = a+ b
+    const val FLAG = true
+}
+</code></pre>
+<p>使用方式：</p>
+<pre><code class="language-kotlin">fun main(args: Array&lt;String&gt;) {
+    Utils.sum(1,2)
+    Utils.FLAG
+}
+</code></pre>
+<p>在java中的使用方式：</p>
+<pre><code class="language-java">public static void main(String[] args) {
+    Utils.INSTANCE.sum(1,2);
+}
+</code></pre>
+<p>如果我们在java中调用也想和在kotlin中调用方式一样，那么应该如何来写？其实很简单，只需要在kotlin中的静态方法或者静态成员上面添加注解**@JvmStatic<strong>和</strong>@JvmField**即可</p>
+<pre><code class="language-kotlin">object Utils {
+    @JvmStatic
+    fun sum(a:Int,b:Int):Int = a+ b
+    @JvmField
+    var FLAG = true
+}
+</code></pre>
+<p>那么在java中的调用方式就和kotlin中完全一致了</p>
+<pre><code class="language-java">public static void main(String[] args) {
+    Utils.sum(1,2);
+    Utils.FLAG = false;
+}
+</code></pre>
+<blockquote>
+<p><strong>注意object关键字的特点</strong>：</p>
+<p><strong>只有一个实例的类(单例)</strong></p>
+<p><strong>不能自定义构造方法</strong></p>
+<p><strong>可以实现接口、继承父类</strong></p>
+<p><strong>本质上就是单例模式</strong></p>
+</blockquote>
+</li>
+<li>
+<p><strong>通过Kotlin中的伴生对象来实现</strong></p>
+<p>在文章的开始说过，在Kotlin中并没有静态类和成员的概念，但是并不是的kotlin中不能实现类似相应的功能。我们可以通过kotlin中的伴生对象来实现，每个类都可以对应一个伴生对象，伴生对象的成员全局独一份，<strong>伴生对象的成员类似java中的静态成员</strong>。</p>
+<pre><code class="language-kotlin">class ManagerConstants {
+    companion object {
+        val isLogin = false
+
+        fun sum(a:Int,b:Int):Int {
+            return a + b
+        }
+
+    }
+}
+</code></pre>
+<p>使用方式：</p>
+<pre><code class="language-kotlin">fun main(args: Array&lt;String&gt;) {
+    ManagerConstants.sum(1,2)
+    ManagerConstants.isLogin
+}
+</code></pre>
+<p>java中的使用方式：</p>
+<pre><code class="language-java">public static void main(String[] args) {
+   ManagerConstants.Companion.sum(1,2);
+  ManagerConstants.Companion.isLogin();
+}
+</code></pre>
+<p>和静态类一样如果想要java和kotlin的使用方式一样，需要在kotlin类中的方法和变量上添加**@JvmStatic<strong>和</strong>@JvmField**即可</p>
+<pre><code class="language-kotlin">class ManagerConstants {
+    companion object {
+        @JvmField
+        val isLogin = false
+        @JvmStatic
+        fun sum(a:Int,b:Int):Int {
+            return a + b
+        }
+
+    }
+}
+</code></pre>
+<p>那么在java中的使用方式：</p>
+<pre><code class="language-java">public static void main(String[] args) {
+   ManagerConstants.sum(1,2);
+   ManagerConstants.isLogin;
+}
+</code></pre>
+</li>
+<li>
+<p><strong>使用包级函数和变量</strong></p>
+<p>Kotlin和Java及C#不同的是，可以在包里面直接声明函数。做法和类中是一样的。</p>
+<p>创建一个名为static.kt的文件，然后在文件中直接写方法和变量</p>
+<figure data-type="image" tabindex="1"><img src="https://eternalprogress.github.io/post-images/112233.png" alt="包级函数" loading="lazy"></figure>
+<p>使用方式：</p>
+<pre><code class="language-kotlin">fun main(args: Array&lt;String&gt;) {
+    var intSum = sum(1,2)
+    println(kotlinFlag)
+}
+</code></pre>
+<p>在java中的使用方式：</p>
+<pre><code class="language-java">public static void main(String[] args) {
+   StaticKt.sum(1,2);
+}
+</code></pre>
+</li>
+</ul>
+<p>看到这里相信小伙伴对kotlin中的静态方法的写法已经有了基本的理解，最后需要注意的是，<strong>在kotlin中使用静态方法的场景建议使用包级函数、成员的方式来实现</strong>。</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://eternalprogress.github.io/post/hello-gridea/">
+                  <h3 class="post-title">
+                    测试记录
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
